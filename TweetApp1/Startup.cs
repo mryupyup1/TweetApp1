@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using TweetApp1.Sender;
 
 namespace TweetApp1
 {
@@ -41,6 +42,7 @@ namespace TweetApp1
            
             services.AddTransient<ITweetAppService, TweetAppService>();
             services.AddTransient<ITweetRepository, TweetRepository>();
+            services.AddSingleton<IMessageSender, MessageSender>();
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options =>
@@ -64,21 +66,19 @@ namespace TweetApp1
                     config.Filters.Add(typeof(CustomFilter));
                 });
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            services.AddAuthentication(options =>
+            services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(cfg =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(cfg =>
-            {
-                cfg.RequireHttpsMetadata = false;
-                cfg.SaveToken = true;
+                
                 cfg.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = this.Configuration["JwtIssuer"],
-                    ValidAudience = this.Configuration["JwtIssuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwtkey"])),
-                    ClockSkew = TimeSpan.Zero,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime =true,
+                    ValidIssuer = this.Configuration["Jwt:Issuer"],
+                    ValidAudience = this.Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwt:Key"])),
+                    
                 };
             });
            

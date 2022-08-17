@@ -9,6 +9,8 @@ namespace TweetAPP1.Models
 
         public string Username { get; set; }
 
+        public string FirstName { get; set; }
+
         public string Comments { get; set; }
 
         public string Imagename { get; set; }
