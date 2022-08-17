@@ -23,7 +23,7 @@ namespace TweetApp1.Repositories
         {
             Comment comments = new Comment();
             int results = 0;
-            var result = await this.dbcontext.Tweets.Where(s => s.Username == username && s.Id == tweetid).FirstOrDefaultAsync();
+            var result = await this.dbcontext.Tweets.Where(s =>s.Username == username && s.Id == tweetid).FirstOrDefaultAsync();
             if (result != null)
             {
                 comments.TweetId = result.Id;
@@ -46,6 +46,8 @@ namespace TweetApp1.Repositories
             return 1;
         }
 
+     
+
         public async Task<int> DeleteTweet(string username, int tweetid)
         {
             var result = await this.dbcontext.Tweets.Where(s => s.Username == username && s.Id == tweetid).FirstOrDefaultAsync();
@@ -59,7 +61,7 @@ namespace TweetApp1.Repositories
             var userResult = await this.dbcontext.User.Where(s => s.Username == username).FirstOrDefaultAsync();
             this.dbcontext.Remove(userResult);
 
-            var tweetResult = await this.dbcontext.Tweets.Where(s => s.Username == username).ToListAsync(); ;
+            var tweetResult = await this.dbcontext.Tweets.Where(s => s.Username == username).ToListAsync(); 
             if (tweetResult != null)
             {
                 foreach (var tweet in tweetResult)
@@ -68,7 +70,7 @@ namespace TweetApp1.Repositories
                 }
             }
 
-            var commentResult = await this.dbcontext.Comments.Where(s => s.Username == username).ToListAsync();
+            var commentResult = await this.dbcontext.Comments.Where(s => s.FirstName == username).ToListAsync();
             if(commentResult != null)
             {
                 foreach (var comment in commentResult)
@@ -125,7 +127,7 @@ namespace TweetApp1.Repositories
         public async Task<List<UserComments>> GetComments(string username, int tweetid)
         {
             var result = await this.dbcontext.Tweets.Where(s => s.Username == username && s.Id == tweetid).FirstOrDefaultAsync();
-            var result1 = await (from commentss in this.dbcontext.Comments join users in this.dbcontext.User on username equals users.Username where commentss.TweetId == result.Id select new UserComments { Username = commentss.Username, Comments = commentss.Comments, Imagename = users.ImageName, Date = commentss.Date }).ToListAsync();
+            var result1 = await (from commentss in this.dbcontext.Comments join users in this.dbcontext.User on username equals users.Username where commentss.TweetId == result.Id select new UserComments { Username = commentss.Username,FirstName = commentss.FirstName, Comments = commentss.Comments, Imagename = users.ImageName, Date = commentss.Date }).ToListAsync();
             return result1;
         }
 
@@ -133,7 +135,7 @@ namespace TweetApp1.Repositories
         public async Task<List<UserTweets>> GetTweetsByUser(string username)
         {
             var users = await this.dbcontext.User.FirstOrDefaultAsync(e => e.Username == username);
-            var result = await (from tweet in this.dbcontext.Tweets join user in this.dbcontext.User on tweet.Username equals user.Username where tweet.Username == users.Username select new UserTweets { UserName = user.Username, Tweets = tweet.Tweets, Imagename = user.ImageName, TweetDate = tweet.TweetDate, FirstName = user.FirstName, LastName = user.LastName, Likes = tweet.Likes }).ToListAsync();
+            var result = await (from tweet in this.dbcontext.Tweets join user in this.dbcontext.User on tweet.Username equals user.Username where tweet.Username == users.Username select new UserTweets {tweetId = tweet.Id, UserName = user.Username, Tweets = tweet.Tweets, Imagename = user.ImageName, TweetDate = tweet.TweetDate, FirstName = user.FirstName, LastName = user.LastName, Likes = tweet.Likes }).ToListAsync();
             return result;
         }
 
@@ -189,13 +191,7 @@ namespace TweetApp1.Repositories
             return result;
         }
 
-        /// <summary>
-        /// UpdatePassword.
-        /// </summary>
-        /// <param name="emailId">emailId.</param>
-        /// <param name="oldpassword">oldpassword.</param>
-        /// <param name="newPassword">newPassword.</param>
-        /// <returns>response.</returns>
+        
         public async Task<bool> UpdatePassword(string emailId, string oldpassword, string newPassword)
         {
             var update = await this.dbcontext.User.Where(x => x.EmailId == emailId && x.Password == oldpassword).FirstOrDefaultAsync();
@@ -213,23 +209,14 @@ namespace TweetApp1.Repositories
             return false;
         }
 
-        /// <summary>
-        /// ValidateEmailId.
-        /// </summary>
-        /// <param name="emailId">emailId.</param>
-        /// <returns>response.</returns>
+        
         public async Task<User> ValidateEmailId(string emailId)
         {
             var user = await this.dbcontext.User.FirstOrDefaultAsync(e => e.EmailId == emailId);
             return user;
         }
 
-        /// <summary>
-        /// ValidateName.
-        /// </summary>
-        /// <param name="firstName">firstName.</param>
-        /// <param name="loginId">loginId.</param>
-        /// <returns>response.</returns>
+        
         public async Task<User> ValidateName(string loginId)
         {
             var user = await this.dbcontext.User.FirstOrDefaultAsync(e => e.Username == loginId);

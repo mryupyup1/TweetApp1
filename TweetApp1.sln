@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetApp1", "TweetApp1\TweetApp1.csproj", "{D158D4FB-BC52-4D6C-8F18-72E05327B4CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TweetApp1", "TweetApp1\TweetApp1.csproj", "{D158D4FB-BC52-4D6C-8F18-72E05327B4CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQConsumer", "RabbitMQConsumer\RabbitMQConsumer.csproj", "{561CD3EE-5B44-44D3-996F-784E29DF665E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D158D4FB-BC52-4D6C-8F18-72E05327B4CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D158D4FB-BC52-4D6C-8F18-72E05327B4CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D158D4FB-BC52-4D6C-8F18-72E05327B4CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{561CD3EE-5B44-44D3-996F-784E29DF665E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{561CD3EE-5B44-44D3-996F-784E29DF665E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{561CD3EE-5B44-44D3-996F-784E29DF665E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{561CD3EE-5B44-44D3-996F-784E29DF665E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
